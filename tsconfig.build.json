@@ -7,8 +7,5 @@
     },
     "include": [
         "src"
-    ],
-    "scripts": {
-        "build": "vite build && tsc -p tsconfig.build.json"
-    }
+    ]
 }
