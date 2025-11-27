@@ -1,0 +1,19 @@
+.pixel-snow-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.pixel-flake {
+  position: absolute;
+  background-color: white;
+  width: 4px;
+  height: 4px;
+  opacity: 0.8;
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+}

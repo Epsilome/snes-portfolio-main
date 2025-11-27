@@ -1,0 +1,81 @@
+.snes-carousel {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin: 2rem auto;
+  overflow: visible;
+  padding: 0 3rem;
+}
+
+.snes-carousel-container {
+  position: relative;
+  width: 100%;
+  min-height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.snes-carousel-content {
+  width: 100%;
+  transition: opacity 0.3s ease-in-out;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.snes-carousel-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #000;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  border: none;
+  outline: none;
+  padding: 0;
+}
+
+.snes-carousel-button:hover {
+  opacity: 0.8;
+}
+
+.snes-carousel-button:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.snes-carousel-button.prev {
+  left: -1.5rem;
+}
+
+.snes-carousel-button.next {
+  right: -1.5rem;
+}
+
+.snes-carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.snes-carousel-dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.1s steps(1);
+  border: 1px solid #00f;
+}
+
+.snes-carousel-dot.active {
+  background: #00f;
+  transform: scale(1.2);
+  box-shadow: 0 0 4px #00f;
+}

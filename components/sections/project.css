@@ -1,0 +1,21 @@
+/* project.css */
+.snes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .snes-box { width: 100%; }
+  
+  .RetroCard {
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Optional: crisp retro vibe on screenshots; safe for flow images */
+  .project-shot { image-rendering: pixelated; }
+  
+  /* IMPORTANT: Never set global img width/height here. 
+     If you had rules like img { width: 100vw } remove them. */
+  

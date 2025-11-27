@@ -1,0 +1,84 @@
+/* Container helpers (center + spacing) */
+.projects-page,
+.project-detail {
+  max-width: 1200px;            /* grid page width */
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.project-detail {
+  max-width: 960px;             /* detail page a bit narrower for readability */
+}
+
+/* Title */
+.page-title {
+  text-align: center;
+  margin: 12px 0 20px;
+}
+
+/* Button row */
+.btn-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+/* Grid and card */
+.projects-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.project-card {
+  border: 2px solid #525252;
+  background: rgba(24, 24, 27, 0.6);
+  border-radius: 16px;
+  box-shadow: 0 0 0 4px #111;
+  overflow: hidden;
+  text-decoration: none;         /* Link reset */
+  color: inherit;
+}
+
+.project-card-body {
+  padding: 16px 18px;
+}
+
+.project-card-body p {
+  margin: 8px 0 0;
+  line-height: 1.55;
+}
+
+/* Image treatment (no absolute/fill; predictable height) */
+.project-thumb,
+.detail-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.project-thumb {
+  max-height: 260px;
+  border-bottom: 1px solid #525252;
+}
+
+.detail-img {
+  max-height: 460px;
+  border: 1px solid #525252;
+  border-radius: 12px;
+}
+
+/* Gallery grid */
+.gallery {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  margin-top: 16px;
+}
+
+/* SNES list spacing */
+.snes-list {
+  margin-top: 12px;
+}

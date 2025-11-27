@@ -1,0 +1,12 @@
+/* layout.css */
+body {
+    margin: 0;
+  }
+  
+  .container {
+    padding-top: 20px; /* Adjust the padding as needed */
+  }
+  
+  .content {
+    padding-top: 20px; /* Adjust the padding as needed */
+  }
