@@ -1,12 +1,14 @@
-/* layout.css */
+/* layout.css — minimal resets */
 body {
-    margin: 0;
-  }
-  
-  .container {
-    padding-top: 20px; /* Adjust the padding as needed */
-  }
-  
-  .content {
-    padding-top: 20px; /* Adjust the padding as needed */
-  }
+  margin: 0;
+}
+
+.container {
+  padding-top: 20px;
+  margin: 0 auto;
+}
+
+.content {
+  padding-top: 10px;
+  padding-bottom: 40px;
+}

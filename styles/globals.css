@@ -1,20 +1,461 @@
-body {
-  font-family: "Pixel", sans-serif;
-  background-color: #2d2d2d;
-  color: #fff;
-  margin: 0;
-  padding: 0;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════
+   ENCHANTED WORKSHOP — Design Tokens & CSS Variables
+   ═══════════════════════════════════════════════════ */
+
+:root {
+  /* Day mode (Warm Amber) */
+  --ambient-color: #f5a623;
+  --ambient-glow: rgba(245, 166, 35, 0.15);
+  --ambient-text-glow: 0 0 10px rgba(245, 166, 35, 0.4);
+  --bg-room: #1a1a2e;
+  --bg-desk: #2a1f3d;
+  --bg-desk-surface: #1e1533;
+  --accent-color: #ffd700;
+  --hearth-color: #ff6b35;
+  --text-primary: #f0e6d3;
+  --text-secondary: #b8a88a;
+  --border-glow: rgba(245, 166, 35, 0.3);
+}
+
+[data-theme="night"] {
+  --ambient-color: #00d4ff;
+  --ambient-glow: rgba(0, 212, 255, 0.12);
+  --ambient-text-glow: 0 0 10px rgba(0, 212, 255, 0.4);
+  --bg-room: #0a0a1a;
+  --bg-desk: #151030;
+  --bg-desk-surface: #0d0a20;
+  --accent-color: #00d4ff;
+  --hearth-color: #4488ff;
+  --text-primary: #c8dff0;
+  --text-secondary: #7a9ab8;
+  --border-glow: rgba(0, 212, 255, 0.3);
+}
+
+/* ═══════ NES.css + Tailwind Conflict Fix ═══════
+   NES.css relies on specific box-shadow borders.
+   Tailwind's border-box reset can break them.
+   We preserve NES.css pixel borders globally.     */
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-.snes-container {
-  display: flex;
-  gap: 1.5rem;
-  /* Increased gap for better spacing */
-  flex-wrap: wrap;
-  justify-content: center;
-  /* Centers items */
+/* Ensure NES containers keep their pixel borders intact */
+.nes-container {
+  box-sizing: content-box !important;
 }
+
+/* ═══════ Base Body ═══════ */
+
+body {
+  font-family: "Press Start 2P", cursive;
+  background-color: var(--bg-room);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  transition: background-color 0.8s ease, color 0.6s ease;
+  font-size: 10px;
+  line-height: 1.8;
+}
+
+/* ═══════ Hearth Ambient Glow (bottom-right) ═══════ */
+
+body::before {
+  content: "";
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 60vw;
+  height: 60vh;
+  background: radial-gradient(ellipse at 100% 100%,
+      rgba(255, 140, 50, 0.25) 0%,
+      rgba(255, 107, 53, 0.14) 25%,
+      rgba(245, 166, 35, 0.06) 50%,
+      transparent 75%);
+  pointer-events: none;
+  z-index: 0;
+  animation: hearth-pulse 4s ease-in-out infinite;
+}
+
+[data-theme="night"] body::before {
+  background: radial-gradient(ellipse at 100% 100%,
+      rgba(68, 136, 255, 0.18) 0%,
+      rgba(0, 212, 255, 0.08) 35%,
+      transparent 70%);
+}
+
+@keyframes hearth-pulse {
+
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
+}
+
+/* ═══════ Pixel Grid Overlay ═══════ */
+
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 8px 8px;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* ═══════ Wooden Desk Container ═══════ */
+
+.desk-container {
+  position: relative;
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 2rem 2.5rem;
+  border: 4px solid;
+  border-image: repeating-linear-gradient(90deg,
+      #8B6914 0px,
+      #A07818 3px,
+      #6B510F 5px,
+      #8B6914 8px) 4;
+  background: var(--bg-desk);
+  box-shadow:
+    inset 0 0 40px rgba(0, 0, 0, 0.4),
+    0 0 30px var(--ambient-glow);
+  transition: box-shadow 0.8s ease, background 0.8s ease;
+}
+
+/* ═══════ Section Panels ═══════ */
+
+.workshop-panel {
+  background: var(--bg-desk-surface);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  border-left: 4px solid var(--accent-color);
+  border-radius: 4px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.workshop-panel:hover {
+  border-color: var(--border-glow);
+  border-left-color: var(--accent-color);
+  box-shadow:
+    inset 0 0 20px rgba(0, 0, 0, 0.3),
+    0 0 15px var(--ambient-glow);
+}
+
+/* ═══════ Terminal Glow (green reflection) ═══════ */
+
+.terminal-glow {
+  position: relative;
+}
+
+.terminal-glow::after {
+  content: "";
+  position: absolute;
+  bottom: -40px;
+  left: 10%;
+  width: 80%;
+  height: 40px;
+  background: radial-gradient(ellipse at 50% 0%,
+      rgba(0, 255, 65, 0.10) 0%,
+      rgba(0, 255, 65, 0.03) 60%,
+      transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(8px);
+}
+
+/* ═══════ Parchment / Letter Styles ═══════ */
+
+.parchment {
+  background: linear-gradient(145deg,
+      rgba(255, 215, 0, 0.04) 0%,
+      rgba(255, 215, 0, 0.01) 100%), var(--bg-desk-surface);
+  color: var(--text-primary);
+  padding: 1.5rem 1.8rem;
+  border: 2px solid rgba(255, 215, 0, 0.15);
+  border-radius: 4px;
+  position: relative;
+  font-size: 9px;
+  box-shadow:
+    inset 0 0 20px rgba(0, 0, 0, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ═══════ Scroll Container ═══════ */
+
+.magic-scroll {
+  position: relative;
+  background: var(--bg-desk-surface);
+  border: 2px solid var(--accent-color);
+  border-top: 3px solid var(--accent-color);
+  border-bottom: 3px solid var(--accent-color);
+  border-radius: 4px;
+  padding: 1.5rem;
+  overflow: hidden;
+}
+
+/* ═══════ Golden Glow Hover (Inventory Cards) ═══════ */
+
+.inventory-card {
+  background: var(--bg-desk-surface);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  padding: 1rem;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.inventory-card:hover {
+  border-color: var(--accent-color);
+  box-shadow:
+    0 0 12px rgba(255, 215, 0, 0.4),
+    0 0 30px rgba(255, 215, 0, 0.15),
+    inset 0 0 15px rgba(255, 215, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+/* ═══════ Power-Up / Alchemy Item ═══════ */
+
+.power-up {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  background: var(--bg-desk-surface);
+  transition: all 0.3s ease;
+  text-align: center;
+  font-size: 8px;
+}
+
+.power-up:hover {
+  border-color: var(--accent-color);
+  transform: scale(1.08);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+}
+
+.power-up svg {
+  width: 32px;
+  height: 32px;
+  fill: var(--accent-color);
+  transition: fill 0.3s ease;
+}
+
+/* ═══════ Typewriter ═══════ */
+
+.typewriter-cursor {
+  border-right: 3px solid currentColor;
+  animation: typewriter-cursor 0.8s step-end infinite;
+  padding-right: 2px;
+}
+
+@keyframes typewriter-cursor {
+
+  0%,
+  100% {
+    border-color: transparent;
+  }
+
+  50% {
+    border-color: currentColor;
+  }
+}
+
+/* ═══════ Particle Effect (Level Up) ═══════ */
+
+.particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: particle-float 1.2s ease-out forwards;
+}
+
+@keyframes particle-float {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-80px) translateX(var(--drift, 0px)) scale(0);
+    opacity: 0;
+  }
+}
+
+/* ═══════ NES.css Overrides for Workshop Theme ═══════ */
+
+.nes-container {
+  background: var(--bg-desk-surface) !important;
+  color: var(--text-primary) !important;
+}
+
+.nes-container.is-dark {
+  background: var(--bg-desk) !important;
+}
+
+.nes-btn {
+  font-family: "Press Start 2P", cursive;
+  font-size: 9px;
+}
+
+.nes-btn.is-warning {
+  color: #1a1a2e;
+}
+
+/* ═══════ Section Titles ═══════ */
+
+.section-title {
+  font-family: "Press Start 2P", cursive;
+  font-size: 14px;
+  color: var(--accent-color);
+  text-shadow: var(--ambient-text-glow);
+  margin-bottom: 1rem;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+/* ═══════ Terminal Monitor ═══════ */
+
+.terminal-screen {
+  background: #0a0a0a;
+  border: 3px solid #333;
+  border-radius: 4px;
+  padding: 1.5rem;
+  font-family: "Press Start 2P", cursive;
+  color: #00ff41;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 30px rgba(0, 255, 65, 0.05),
+    0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.terminal-screen::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(transparent 50%,
+      rgba(0, 255, 65, 0.02) 50%);
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ═══════ Responsive ═══════ */
+
+@media (max-width: 640px) {
+  .desk-container {
+    margin: 0 0.5rem;
+    padding: 1rem;
+  }
+
+  body {
+    font-size: 8px;
+  }
+
+  .section-title {
+    font-size: 11px;
+  }
+}
+
+/* ═══════ Alchemy Shelf (Skills) ═══════ */
+
+.alchemy-shelf {
+  position: relative;
+  background: rgba(255, 255, 255, 0.02);
+  border: 2px solid rgba(93, 64, 55, 0.3);
+  border-top: 3px solid #5d4037;
+  border-radius: 4px;
+  padding: 1.2rem 1.4rem;
+  margin-bottom: 1rem;
+  box-shadow:
+    inset 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* ═══════ SNES Screen Flash ═══════ */
+
+.screen-flash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: white;
+  z-index: 99999;
+  pointer-events: none;
+  animation: snes-flash 200ms ease-out forwards;
+}
+
+@keyframes snes-flash {
+  0% {
+    opacity: 1;
+  }
+
+  30% {
+    opacity: 0.8;
+  }
+
+  60% {
+    opacity: 0.2;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ═══════ Wisp shimmer ring ═══════ */
+
+@keyframes shimmer-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes wisp-float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* ═══════ Legacy Support (kept for /game page) ═══════ */
 
 .snes-box {
   margin: 2rem auto;
@@ -26,158 +467,19 @@ body {
   box-shadow: 4px 4px 0 #000;
 }
 
-.snes-box h1,
-.snes-box h2,
-.snes-box h3 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-.snes-box p {
-  line-height: 1.6;
-  margin-bottom: 1rem;
-  text-align: justify;
-}
-
-.snes-list {
-  padding-left: 1.5rem;
-  list-style: none;
-}
-
-.snes-list li {
-  margin-bottom: 0.5rem;
-  display: flex;
-  align-items: baseline;
-}
-
-.snes-list li::before {
-  content: "•";
-  color: red;
-  margin-right: 0.5rem;
-  font-size: 1.2rem;
-}
-
-.snes-card {
-  background: #4c4c4c;
-  border: 2px solid #fff;
-  border-radius: 8px;
-  padding: 1rem;
-  box-shadow: 4px 4px 0 #000;
-  flex: 1 1 calc(33.33% - 2rem);
-  /* Adjust for responsive grid */
-  margin: 1rem;
+.snes-text {
   text-align: center;
 }
 
-.snes-card h3 {
+.snes-subtitle {
+  text-align: center;
   margin-bottom: 1rem;
-  font-size: 1.2rem;
 }
 
-.snes-card p {
-  margin: 0;
-  font-size: 0.9rem;
-}
-
-.snes-button {
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.snes-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-width: 600px;
-  margin: 2rem auto;
-}
-
-.snes-input,
-textarea {
-  width: 100%;
-  padding: 0.5rem;
-  font-size: 1rem;
-  border: 2px solid #fff;
-  border-radius: 4px;
-  background-color: #3a3a3a;
-  color: #fff;
-}
-
-/* ---- generic page wrapper ---- */
-.page-wrap {
-  max-width: 1100px;
-  /* sweet spot for images + text */
-  margin: 0 auto;
-  padding: 24px 16px;
-}
-
-/* keep all content centered and spaced */
-.page-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-/* row of snes buttons centered */
-.button-row {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-}
-
-/* projects grid (cards) */
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-}
-
-/* project card */
-.project-card {
-  padding: 0;
-  /* image touches top edge */
-  overflow: hidden;
-}
-
-/* image styles – safe & consistent */
-.project-thumb,
-.project-img {
-  display: block;
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-}
-
-/* control image heights so nothing dominates */
-.project-thumb {
-  max-height: 260px;
-  border-bottom: 1px solid #525252;
-}
-
-.project-img {
-  max-height: 460px;
-}
-
-/* inner spacing for card body */
-.card-body {
-  padding: 16px;
-}
-
-/* nicer paragraph rhythm */
-.lead {
-  line-height: 1.65;
-}
-
-/* make snes-button act like a button even on <a> */
 .snes-button {
   display: inline-block;
   text-decoration: none;
-}
-
-/* optional: center page titles outside snes-box */
-.page-title {
-  text-align: center;
-  margin: 8px 0 0;
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
 }
