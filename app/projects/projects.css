@@ -1,13 +1,15 @@
 /* Container helpers (center + spacing) */
 .projects-page,
 .project-detail {
-  max-width: 1200px;            /* grid page width */
+  max-width: 1200px;
+  /* grid page width */
   margin: 0 auto;
   padding: 24px 16px;
 }
 
 .project-detail {
-  max-width: 960px;             /* detail page a bit narrower for readability */
+  max-width: 960px;
+  /* detail page a bit narrower for readability */
 }
 
 /* Title */
@@ -28,7 +30,7 @@
 .projects-grid {
   display: grid;
   gap: 24px;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
 }
 
 .project-card {
@@ -37,7 +39,8 @@
   border-radius: 16px;
   box-shadow: 0 0 0 4px #111;
   overflow: hidden;
-  text-decoration: none;         /* Link reset */
+  text-decoration: none;
+  /* Link reset */
   color: inherit;
 }
 

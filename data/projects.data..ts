@@ -1,21 +1,20 @@
 export type Project = {
-  slug: string;
-  title: string;
-  blurb: string;
-  role?: string;
-  period?: string;
-  stack: string[];
-  links?: { demo?: string; repo?: string };
-  highlights: string[];
-  images: { src: string; alt: string }[];
-};
+  slug: string
+  title: string
+  blurb: string
+  role?: string
+  period?: string
+  stack: string[]
+  links?: { demo?: string; repo?: string }
+  highlights: string[]
+  images: { src: string; alt: string }[]
+}
 
 export const projects: Project[] = [
   {
     slug: "project-management-system",
     title: "Project Management System",
-    blurb:
-      "Angular + Spring + MySQL app for planning, resource allocation, and decision support.",
+    blurb: "",
     role: "Full-stack Engineer",
     period: "2024",
     stack: ["Angular", "Spring Boot", "MySQL", "REST"],
@@ -34,8 +33,7 @@ export const projects: Project[] = [
   {
     slug: "time-job-platform",
     title: "Time & Job Management Platform",
-    blurb:
-      "Scheduling, assignment, and time-spent analytics for teams with a clean retro UI.",
+    blurb: "",
     role: "Full-stack Engineer",
     period: "2023",
     stack: ["Angular", "Spring Boot", "MySQL"],
@@ -50,8 +48,7 @@ export const projects: Project[] = [
   {
     slug: "ecommerce-website",
     title: "E-Commerce Website",
-    blurb:
-      "Responsive e-commerce with inventory, orders, and product catalog.",
+    blurb: "",
     role: "Full-stack Engineer",
     period: "2023",
     stack: ["Angular", "Spring Boot", "MySQL"],
@@ -69,8 +66,7 @@ export const projects: Project[] = [
   {
     slug: "jarvis-ai-agent",
     title: "Jarvis — AI Shopping Agent",
-    blurb:
-      "CLI + Streamlit tool that scrapes FR retailers, scores laptops for gaming/work, and exports explainable results.",
+    blurb: "",
     role: "Founder / Engineer",
     period: "2025 (WIP)",
     stack: ["Python", "Playwright", "BeautifulSoup", "Regex", "Streamlit"],
@@ -85,6 +81,6 @@ export const projects: Project[] = [
       { src: "/projects/jarvis-2.png", alt: "Jarvis — results & debug view" },
     ],
   },
-];
+]
 
 // console.log("[projects.ts] loaded with", projects.length, "items");

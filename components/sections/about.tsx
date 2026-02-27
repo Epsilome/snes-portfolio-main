@@ -1,79 +1,98 @@
 /* eslint-disable react/no-unescaped-entities */
-/* eslint-disable react/react-in-jsx-scope */
-import React from "react"
+"use client"
 
-export default function About() {
+import React, { useState, useEffect, useRef } from "react"
+import { motion } from "framer-motion"
+
+const slideIn = {
+  hidden: { opacity: 0, x: -40 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
+}
+
+/**
+ * HERO — Terminal readout on a pixelated monitor SVG
+ */
+export default function HeroTerminal() {
+  const [displayText, setDisplayText] = useState("")
+  const fullText = "> ANAS EL MARZOUQY"
+  const lineRef = useRef(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (lineRef.current < fullText.length) {
+        lineRef.current++
+        setDisplayText(fullText.slice(0, lineRef.current))
+      } else {
+        clearInterval(interval)
+      }
+    }, 80)
+    return () => clearInterval(interval)
+  }, [])
+
   return (
-    <div className="snes-box">
-      <h2 className="snes-text">About Me</h2>
+    <motion.div
+      variants={slideIn}
+      initial="hidden"
+      animate="visible"
+      className="terminal-glow"
+      style={{ marginBottom: "2rem" }}
+    >
+      {/* Monitor SVG Frame */}
+      <svg
+        width="100%"
+        height="auto"
+        viewBox="0 0 400 220"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ maxWidth: "500px", margin: "0 auto", display: "block" }}
+      >
+        {/* Monitor body */}
+        <rect x="20" y="10" width="360" height="170" rx="4" fill="#2a2a2a" stroke="#555" strokeWidth="4" />
+        {/* Screen bezel */}
+        <rect x="32" y="22" width="336" height="146" rx="2" fill="#111" stroke="#333" strokeWidth="2" />
+        {/* Screen inner */}
+        <rect x="36" y="26" width="328" height="138" fill="#0a0a0a" />
+        {/* Scanlines on screen */}
+        <pattern id="scanlines" width="4" height="4" patternUnits="userSpaceOnUse">
+          <rect width="4" height="2" fill="transparent" />
+          <rect y="2" width="4" height="2" fill="rgba(0,255,65,0.03)" />
+        </pattern>
+        <rect x="36" y="26" width="328" height="138" fill="url(#scanlines)" />
 
-      <div className="snes-content">
-        <p className="mb-3">
-          I build fast, clean full-stack web apps with{' '}
-          <span
-            className="spoiler"
-            style={{
-              backgroundColor: '#000',
-              color: '#000',
-              padding: '0 4px',
-              borderRadius: '4px',
-              cursor: 'help',
-              transition: 'all 0.3s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'transparent';
-              e.currentTarget.style.color = '#fff';
-              e.currentTarget.style.textShadow = '0 0 5px #fff';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = '#000';
-              e.currentTarget.style.color = '#000';
-              e.currentTarget.style.textShadow = 'none';
-            }}
-          >
-            Next.js/Angular + Spring
-          </span>
-          . I like turning vague requirements into shipped features, and I care a lot about UI polish and
-          stable APIs.
-        </p>
+        {/* Stand */}
+        <rect x="160" y="180" width="80" height="12" fill="#333" />
+        <rect x="140" y="192" width="120" height="8" rx="2" fill="#444" />
 
-        <ul className="snes-list space-y-2">
-          <li>
-            <span>
-              <b>What I’m good at:</b> designing REST APIs, structuring frontends, making DX smooth
-            </span>
-          </li>
-          <li>
-            <span>
-              <b>Recent win:</b> streamlined planning & resource flows (cut manual coordination by ~30%)
-            </span>
-          </li>
-          <li>
-            <span>
-              <b>Current focus:</b> performance, accessibility, and solid testing habits
-            </span>
-          </li>
-        </ul>
+        {/* Power LED */}
+        <circle cx="200" cy="176" r="3" fill="#00ff41">
+          <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite" />
+        </circle>
+      </svg>
 
-        <div className="mt-5">
-          <h3 className="snes-subtitle">Contact</h3>
-          <div className="flex flex-wrap gap-3 mt-2">
-            <a className="snes-button" href="mailto:anaselmarzouqy@gmail.com">Email Me</a>
-            <a
-              className="snes-button"
-              href="https://www.linkedin.com/in/epsilome/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              LinkedIn
-            </a>
-            {/* Drop your PDF at /public/Anas-EL-MARZOUQY-CV.pdf */}
-            <a className="snes-button" href="/Anas-EL-MARZOUQY-CV.pdf" target="_blank" rel="noopener noreferrer">
-              Download CV
-            </a>
-          </div>
+      {/* Terminal content overlaid on the screen */}
+      <div
+        className="terminal-screen"
+        style={{
+          maxWidth: "440px",
+          margin: "-190px auto 0",
+          position: "relative",
+          zIndex: 2,
+          padding: "1.5rem 1.2rem",
+          background: "transparent",
+          border: "none",
+          boxShadow: "none",
+          textAlign: "left",
+        }}
+      >
+        <div style={{ fontSize: "8px", opacity: 0.5, marginBottom: "8px", color: "#00ff41" }}>workshop@dev:~$</div>
+        <div style={{ fontSize: "12px", color: "#00ff41", minHeight: "20px" }}>
+          {displayText}
+          <span className="typewriter-cursor" />
+        </div>
+        <div style={{ fontSize: "9px", marginTop: "12px", color: "#00cc33", opacity: 0.8 }}>Software Engineer</div>
+        <div style={{ fontSize: "7px", marginTop: "4px", color: "#009922", opacity: 0.6 }}>
+          Full-Stack • Next.js • Angular • Spring Boot
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
