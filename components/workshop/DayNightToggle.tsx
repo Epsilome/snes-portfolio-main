@@ -2,21 +2,24 @@
 
 import React, { useState, useCallback, useEffect } from "react"
 import { useTheme } from "../ConfigContext"
+import { useSound } from "../SoundContext"
 
 /**
  * Pixel-art Lantern toggle that triggers an SNES screen flash on click.
  */
 export default function DayNightToggle() {
   const { toggleTheme, isDayMode } = useTheme()
+  const { playSound, isMuted, toggleMute } = useSound()
   const [flashing, setFlashing] = useState(false)
 
   const handleClick = useCallback(() => {
+    playSound("toggle")
     setFlashing(true)
     // Small delay so the flash fires before the theme shifts
     setTimeout(() => {
       toggleTheme()
     }, 50)
-  }, [toggleTheme])
+  }, [toggleTheme, playSound])
 
   // Remove flash overlay after animation completes
   useEffect(() => {
@@ -123,6 +126,55 @@ export default function DayNightToggle() {
         >
           {isDayMode ? "DAY" : "NIGHT"}
         </span>
+      </button>
+
+      {/* Mute / Unmute button */}
+      <button
+        onClick={toggleMute}
+        aria-label={isMuted ? "Unmute sounds" : "Mute sounds"}
+        style={{
+          position: "fixed",
+          top: 60,
+          left: 20,
+          zIndex: 100,
+          background: "none",
+          border: "2px solid var(--accent-color)",
+          borderRadius: "4px",
+          padding: "4px 6px",
+          cursor: "pointer",
+          transition: "all 0.3s ease",
+          display: "flex",
+          alignItems: "center",
+          opacity: isMuted ? 0.4 : 0.8,
+        }}
+      >
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 16 16"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{ imageRendering: "pixelated" }}
+        >
+          {/* Speaker body */}
+          <rect x="2" y="5" width="4" height="6" fill="var(--accent-color)" />
+          <rect x="6" y="3" width="2" height="10" fill="var(--accent-color)" />
+          {/* Sound waves */}
+          {!isMuted && (
+            <>
+              <rect x="10" y="6" width="1" height="4" fill="var(--accent-color)" opacity="0.7" />
+              <rect x="12" y="4" width="1" height="8" fill="var(--accent-color)" opacity="0.4" />
+            </>
+          )}
+          {/* Mute X */}
+          {isMuted && (
+            <>
+              <rect x="10" y="4" width="2" height="2" fill="#ff4444" />
+              <rect x="12" y="6" width="2" height="2" fill="#ff4444" />
+              <rect x="10" y="8" width="2" height="2" fill="#ff4444" />
+              <rect x="12" y="10" width="2" height="2" fill="#ff4444" />
+            </>
+          )}
+        </svg>
       </button>
     </>
   )

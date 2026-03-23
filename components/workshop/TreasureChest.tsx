@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState, useCallback } from "react"
+import { useSound } from "../SoundContext"
 
 interface Particle {
   id: number
@@ -14,11 +15,13 @@ export default function TreasureChest() {
   const [isOpen, setIsOpen] = useState(false)
   const [particles, setParticles] = useState<Particle[]>([])
   const [showLevelUp, setShowLevelUp] = useState(false)
+  const { playSound } = useSound()
 
   const triggerLevelUp = useCallback(() => {
     if (isOpen) return
     setIsOpen(true)
     setShowLevelUp(true)
+    playSound("open")
 
     const colors = ["#ffd700", "#ff6b35", "#ff4500", "#00d4ff", "#ff69b4", "#7cfc00"]
     const newParticles: Particle[] = Array.from({ length: 20 }, (_, i) => ({

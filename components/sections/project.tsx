@@ -5,6 +5,7 @@ import React from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { projects } from "../../data/projects.data."
+import { useSound } from "../SoundContext"
 
 const staggerContainer = {
   hidden: {},
@@ -17,6 +18,7 @@ const cardSlide = {
 }
 
 export default function ProjectsInventory() {
+  const { playSound } = useSound()
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -107,6 +109,7 @@ export default function ProjectsInventory() {
                 href={`/projects/${p.slug}`}
                 className="nes-btn is-warning"
                 style={{ fontSize: "7px", padding: "4px 8px" }}
+                onClick={() => playSound("click")}
               >
                 View Quest
               </Link>
@@ -120,6 +123,7 @@ export default function ProjectsInventory() {
           href="/projects"
           className="nes-btn"
           style={{ fontSize: "8px", backgroundColor: "#ffc107", color: "#000" }}
+          onClick={() => playSound("click")}
         >
           Browse All Quests
         </Link>

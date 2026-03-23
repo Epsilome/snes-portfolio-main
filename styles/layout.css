@@ -12,3 +12,8 @@ body {
   padding-top: 10px;
   padding-bottom: 40px;
 }
+
+/* Room mode: no scrolling */
+body:has(.room-viewport) {
+  overflow: hidden;
+}

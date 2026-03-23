@@ -7,18 +7,18 @@
    ═══════════════════════════════════════════════════ */
 
 :root {
-  /* Day mode (Warm Amber) */
-  --ambient-color: #f5a623;
-  --ambient-glow: rgba(245, 166, 35, 0.15);
-  --ambient-text-glow: 0 0 10px rgba(245, 166, 35, 0.4);
-  --bg-room: #1a1a2e;
-  --bg-desk: #2a1f3d;
-  --bg-desk-surface: #1e1533;
-  --accent-color: #ffd700;
-  --hearth-color: #ff6b35;
-  --text-primary: #f0e6d3;
-  --text-secondary: #b8a88a;
-  --border-glow: rgba(245, 166, 35, 0.3);
+  /* Day mode (Warm Parchment & Sepia) */
+  --ambient-color: #d4a053;
+  --ambient-glow: rgba(212, 160, 83, 0.18);
+  --ambient-text-glow: 0 0 10px rgba(212, 160, 83, 0.5);
+  --bg-room: #1c1410;
+  --bg-desk: #2c2118;
+  --bg-desk-surface: #221a12;
+  --accent-color: #e8b840;
+  --hearth-color: #e85d20;
+  --text-primary: #f0e0c8;
+  --text-secondary: #c4a882;
+  --border-glow: rgba(232, 184, 64, 0.35);
 }
 
 [data-theme="night"] {
@@ -75,9 +75,9 @@ body::before {
   width: 60vw;
   height: 60vh;
   background: radial-gradient(ellipse at 100% 100%,
-      rgba(255, 140, 50, 0.25) 0%,
-      rgba(255, 107, 53, 0.14) 25%,
-      rgba(245, 166, 35, 0.06) 50%,
+      rgba(232, 93, 32, 0.22) 0%,
+      rgba(212, 160, 83, 0.12) 30%,
+      rgba(180, 120, 40, 0.05) 55%,
       transparent 75%);
   pointer-events: none;
   z-index: 0;
@@ -248,12 +248,48 @@ body::after {
   transition: all 0.3s ease;
   text-align: center;
   font-size: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.power-up::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 215, 0, 0.08) 40%,
+      rgba(255, 215, 0, 0.15) 50%,
+      rgba(255, 215, 0, 0.08) 60%,
+      transparent 100%);
+  transition: none;
+  pointer-events: none;
+}
+
+.power-up:hover::before {
+  animation: skill-shimmer 0.6s ease-out forwards;
 }
 
 .power-up:hover {
   border-color: var(--accent-color);
   transform: scale(1.08);
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+  box-shadow:
+    0 0 12px rgba(255, 215, 0, 0.35),
+    0 0 25px rgba(255, 215, 0, 0.15),
+    inset 0 0 8px rgba(255, 215, 0, 0.06);
+}
+
+@keyframes skill-shimmer {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 100%;
+  }
 }
 
 .power-up svg {
@@ -383,6 +419,35 @@ body::after {
   .section-title {
     font-size: 11px;
   }
+
+  .hero-layout {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .hero-layout .hero-hearth {
+    position: static !important;
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+}
+
+/* ═══════ Hero Layout ═══════ */
+
+.hero-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.hero-terminal {
+  flex: 1;
+  min-width: 0;
+}
+
+.hero-hearth {
+  flex-shrink: 0;
 }
 
 /* ═══════ Alchemy Shelf (Skills) ═══════ */
@@ -455,6 +520,65 @@ body::after {
   }
 }
 
+/* ═══════ Section Dividers ═══════ */
+
+.section-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin: 0.5rem 0;
+  position: relative;
+  height: 32px;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: "";
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      var(--accent-color) 30%,
+      var(--accent-color) 70%,
+      transparent 100%);
+  opacity: 0.3;
+}
+
+.section-divider::before {
+  background: linear-gradient(90deg,
+      transparent 0%,
+      var(--accent-color) 100%);
+}
+
+.section-divider::after {
+  background: linear-gradient(90deg,
+      var(--accent-color) 0%,
+      transparent 100%);
+}
+
+.divider-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: divider-glow 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 4px var(--accent-color));
+}
+
+@keyframes divider-glow {
+
+  0%,
+  100% {
+    filter: drop-shadow(0 0 3px var(--accent-color));
+    opacity: 0.6;
+  }
+
+  50% {
+    filter: drop-shadow(0 0 8px var(--accent-color));
+    opacity: 1;
+  }
+}
+
 /* ═══════ Legacy Support (kept for /game page) ═══════ */
 
 .snes-box {
@@ -482,4 +606,245 @@ body::after {
   margin-top: 0.5rem;
   padding: 0.5rem 1rem;
   cursor: pointer;
+}
+
+/* ═══════ Sidebar: Dungeon Map (Left) ═══════ */
+
+.dungeon-map {
+  position: fixed;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  padding: 14px 12px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  border-left: 3px solid var(--accent-color);
+  border-radius: 6px;
+  backdrop-filter: blur(6px);
+}
+
+.dungeon-map-title {
+  font-family: "Press Start 2P", cursive;
+  font-size: 8px;
+  color: var(--accent-color);
+  text-align: center;
+  margin-bottom: 12px;
+  letter-spacing: 3px;
+  opacity: 0.8;
+}
+
+.dungeon-map-list {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.dungeon-map-node {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  cursor: pointer;
+  opacity: 0.35;
+  transition: opacity 0.3s ease;
+  border: none !important;
+  outline: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  -webkit-appearance: none;
+  border-radius: 3px;
+}
+
+.dungeon-map-node:hover {
+  opacity: 0.8;
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+.dungeon-map-node.past {
+  opacity: 0.5;
+}
+
+.dungeon-map-node.active {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+.dungeon-map-icon {
+  font-size: 12px;
+  flex-shrink: 0;
+  width: 18px;
+  text-align: center;
+  filter: grayscale(0.6);
+  transition: filter 0.3s ease;
+}
+
+.dungeon-map-node.active .dungeon-map-icon {
+  filter: grayscale(0) drop-shadow(0 0 4px var(--accent-color));
+}
+
+.dungeon-map-label {
+  font-family: "Press Start 2P", cursive;
+  font-size: 7px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+.dungeon-map-node.active .dungeon-map-label {
+  color: var(--accent-color);
+}
+
+.dungeon-map-node.past .dungeon-map-label {
+  color: var(--text-secondary);
+}
+
+.dungeon-map-line {
+  width: 2px;
+  height: 10px;
+  margin-left: 16px;
+  background: var(--text-secondary);
+  opacity: 0.12;
+  transition: all 0.3s ease;
+}
+
+.dungeon-map-line.past {
+  background: var(--accent-color);
+  opacity: 0.4;
+}
+
+.dungeon-map-line.active {
+  background: var(--accent-color);
+  opacity: 0.6;
+}
+
+/* ═══════ Sidebar: NPC Guide (Right) ═══════ */
+
+.npc-guide {
+  position: fixed;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 14px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  border-right: 4px solid var(--accent-color);
+  border-radius: 6px;
+  backdrop-filter: blur(6px);
+  max-width: 220px;
+  min-width: 190px;
+  transition: opacity 0.3s ease;
+}
+
+.npc-speech-bubble {
+  background: var(--bg-desk-surface);
+  border: 2px solid var(--accent-color);
+  border-radius: 4px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  position: relative;
+  min-height: 60px;
+  color: var(--text-primary);
+  width: 100%;
+}
+
+/* Speech bubble tail */
+.npc-speech-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 10px solid var(--accent-color);
+}
+
+/* Hide sidebars on narrow screens */
+@media (max-width: 1440px) {
+
+  .dungeon-map,
+  .npc-guide {
+    display: none;
+  }
+}
+
+/* ═══════ Interactive Objects (Point-and-Click) ═══════ */
+
+.interactable-object {
+  cursor: pointer !important;
+  transition: all 0.3s ease;
+}
+
+.interactable-object:hover {
+  filter: brightness(1.1);
+}
+
+.interactable-object:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* ═══════ Room Viewport ═══════ */
+
+.room-viewport {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ═══════ Inventory Bar Slots ═══════ */
+
+.inventory-slot {
+  transition: all 0.3s ease !important;
+}
+
+.inventory-slot:hover {
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 12px var(--ambient-glow);
+  transform: translateY(-2px);
+}
+
+/* ═══════ Level Up Text ═══════ */
+
+@keyframes level-up-text {
+  0% {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(-50%) translateY(-60px);
+    opacity: 0;
+  }
+}
+
+/* ═══════ Flicker for Hearth ═══════ */
+
+@keyframes flicker {
+
+  0%,
+  100% {
+    opacity: 0.8;
+  }
+
+  25% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  75% {
+    opacity: 0.7;
+  }
 }
