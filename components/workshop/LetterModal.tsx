@@ -54,9 +54,9 @@ export default function LetterModal() {
             exit={{ scale: 0.9 }}
             transition={{ duration: 0.3 }}
             style={{
-              width: "100%",
+              width: "calc(100% - 32px)",
               maxWidth: "900px",
-              maxHeight: "100%",
+              maxHeight: "calc(100% - 32px)",
               display: "flex",
               flexDirection: "column",
               background: "var(--bg-desk)",

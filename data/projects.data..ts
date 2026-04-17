@@ -24,45 +24,9 @@ export const projects: Project[] = [
       "API for high-volume data flows",
       "Cut manual coordination ~30% (internal metric)",
     ],
-    images: [
-      { src: "/projects/pms-1.png", alt: "PMS — Dashboard" },
-      { src: "/projects/pms-2.png", alt: "PMS — Feature summary panels" },
-      { src: "/projects/pms-3.png", alt: "PMS — Team workload view (Kanban)" },
-    ],
+    images: [{ src: "/projects/pms-1.png", alt: "PMS — Dashboard" }],
   },
-  {
-    slug: "time-job-platform",
-    title: "Time & Job Management Platform",
-    blurb: "",
-    role: "Full-stack Engineer",
-    period: "2023",
-    stack: ["Angular", "Spring Boot", "MySQL"],
-    links: { demo: "#", repo: "#" },
-    highlights: [
-      "Assignment rules based on skills & availability",
-      "Time-spent analytics and weekly summaries",
-      "Bulk updates and CSV import for backfills",
-    ],
-    images: [{ src: "/projects/tjm-1.png", alt: "Time & Job — dashboard" }],
-  },
-  {
-    slug: "ecommerce-website",
-    title: "E-Commerce Website",
-    blurb: "",
-    role: "Full-stack Engineer",
-    period: "2023",
-    stack: ["Angular", "Spring Boot", "MySQL"],
-    links: { demo: "#", repo: "#" },
-    highlights: [
-      "Inventory & order management",
-      "Responsive layouts and fast product filters",
-      "Secure auth and payment integration",
-    ],
-    images: [
-      { src: "/projects/ecom-1.png", alt: "E-Commerce — admin overview" },
-      { src: "/projects/ecom-2.png", alt: "E-Commerce — products & orders" },
-    ],
-  },
+
   {
     slug: "jarvis-ai-agent",
     title: "Jarvis — AI Shopping Agent",
@@ -77,8 +41,8 @@ export const projects: Project[] = [
       "CLI (prices-gaming/work/debug) + JSON/CSV export; Streamlit viewer",
     ],
     images: [
-      { src: "/projects/jarvis-1.png", alt: "Jarvis — CLI scoring output" },
-      { src: "/projects/jarvis-2.png", alt: "Jarvis — results & debug view" },
+      { src: "/projects/jarvis-1.png", alt: "Jarvis — Hardware Compare" },
+      { src: "/projects/jarvis-2.png", alt: "Jarvis — Laptop Finder" },
     ],
   },
 ]

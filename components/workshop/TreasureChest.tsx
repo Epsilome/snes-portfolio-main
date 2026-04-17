@@ -1,6 +1,7 @@
 "use client"
 
-import React, { useState, useCallback } from "react"
+import React, { useState, useCallback, useEffect } from "react"
+import { createPortal } from "react-dom"
 import { useSound } from "../SoundContext"
 
 interface Particle {
@@ -15,7 +16,12 @@ export default function TreasureChest() {
   const [isOpen, setIsOpen] = useState(false)
   const [particles, setParticles] = useState<Particle[]>([])
   const [showLevelUp, setShowLevelUp] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const { playSound } = useSound()
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const triggerLevelUp = useCallback(() => {
     if (isOpen) return
@@ -36,11 +42,11 @@ export default function TreasureChest() {
     setTimeout(() => {
       setParticles([])
       setShowLevelUp(false)
-    }, 2000)
+    }, 5500)
 
     setTimeout(() => {
       setIsOpen(false)
-    }, 3000)
+    }, 6000)
   }, [isOpen])
 
   return (
@@ -72,27 +78,59 @@ export default function TreasureChest() {
         />
       ))}
 
-      {/* Level Up text */}
-      {showLevelUp && (
-        <div
-          style={{
-            position: "absolute",
-            top: "-30px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            fontFamily: '"Press Start 2P", cursive',
-            fontSize: "16px",
-            color: "#ffd700",
-            textShadow: "0 0 20px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.4)",
-            animation: "level-up-text 1.5s ease-out forwards",
-            pointerEvents: "none",
-            whiteSpace: "nowrap",
-            zIndex: 10,
-          }}
-        >
-          ★ LEVEL UP! ★
-        </div>
-      )}
+      {/* Rick Roll / Secret Gift Overlay */}
+      {showLevelUp &&
+        mounted &&
+        createPortal(
+          <div
+            style={{
+              position: "fixed",
+              left: "50%",
+              top: "50%",
+              transform: "translate(-50%, -50%)",
+              backgroundColor: "rgba(0,0,0,0.85)",
+              padding: "24px",
+              border: "4px solid #C4A035",
+              borderRadius: "12px",
+              zIndex: 9999,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "20px",
+              boxShadow: "0 0 50px rgba(196, 160, 53, 0.6)",
+              pointerEvents: "none",
+            }}
+          >
+            <img
+              src="/pixel-party-popper.png"
+              alt="Party Popper"
+              style={{ height: "120px", transform: "scaleX(-1)", imageRendering: "pixelated" }}
+            />
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
+              <img
+                src="/rick-roll.gif"
+                alt="Rick Roll"
+                style={{ width: "320px", borderRadius: "6px", border: "3px solid #C4A035" }}
+              />
+              <span
+                style={{
+                  fontFamily: '"Press Start 2P", cursive',
+                  fontSize: "14px",
+                  color: "#ffd700",
+                  textShadow: "0 0 10px rgba(255, 215, 0, 0.8)",
+                }}
+              >
+                ★ GOTTEM! ★
+              </span>
+            </div>
+            <img
+              src="/pixel-party-popper.png"
+              alt="Party Popper"
+              style={{ height: "120px", imageRendering: "pixelated" }}
+            />
+          </div>,
+          document.body
+        )}
 
       {/* Treasure Chest SVG */}
       <svg width="80" height="72" viewBox="0 0 80 72" fill="none" xmlns="http://www.w3.org/2000/svg">

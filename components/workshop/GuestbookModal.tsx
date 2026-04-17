@@ -19,6 +19,32 @@ function formatDate(dateStr: string) {
   return `${month} ${day}, ${year}`
 }
 
+/**
+ * Security: Strip potentially dangerous characters
+ * (React escapes by default, but this is added defense-in-depth)
+ */
+function sanitizeInput(str: string) {
+  return str
+    .replace(/<[^>]*>?/gm, "") // Strip HTML tags
+    .replace(/[\x00-\x1F\x7F-\x9F]/g, "") // Remove control/invisible characters
+    .trim()
+}
+
+/**
+ * Security: Block common SQL injection & XSS payloads before they hit the server
+ */
+function isSuspicious(str: string) {
+  const suspiciousPatterns = [
+    /javascript:/gi,
+    /onload\s*=/gi,
+    /onerror\s*=/gi,
+    /\b(DROP TABLE|ALTER TABLE|DELETE FROM|UNION SELECT|INSERT INTO|UPDATE\s+\w+\s+SET)\b/i,
+    /OR\s+1\s*=\s*1/i,
+    /--;?$/,
+  ]
+  return suspiciousPatterns.some((pattern) => pattern.test(str))
+}
+
 export default function GuestbookModal() {
   const { activeView, setActiveView } = useGame()
   const isOpen = activeView === "GUESTBOOK_OPEN"
@@ -61,11 +87,37 @@ export default function GuestbookModal() {
     setSuccess(false)
     setSubmitting(true)
 
+    const rawName = name.trim()
+    const rawMessage = message.trim()
+
+    // 1. Detect malicious payloads
+    if (isSuspicious(rawName) || isSuspicious(rawMessage)) {
+      setError("Security Alert: Restricted characters or patterns detected.")
+      setSubmitting(false)
+      return
+    }
+
+    // 2. Sanitize inputs prior to submission
+    const sanitizedName = sanitizeInput(rawName)
+    const sanitizedMessage = sanitizeInput(rawMessage)
+
+    // 3. Size validation explicitly
+    if (sanitizedName.length < 2 || sanitizedName.length > 30) {
+      setError("Name must be between 2 and 30 characters after sanitization.")
+      setSubmitting(false)
+      return
+    }
+    if (sanitizedMessage.length < 2 || sanitizedMessage.length > 200) {
+      setError("Message must be between 2 and 200 characters after sanitization.")
+      setSubmitting(false)
+      return
+    }
+
     try {
       const res = await fetch("/api/guestbook", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name.trim(), message: message.trim() }),
+        body: JSON.stringify({ name: sanitizedName, message: sanitizedMessage }),
       })
 
       const data = (await res.json()) as GuestbookEntry & { error?: string }
@@ -117,9 +169,9 @@ export default function GuestbookModal() {
             exit={{ scale: 0.9, y: 30 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             style={{
-              width: "100%",
+              width: "calc(100% - 32px)",
               maxWidth: "700px",
-              maxHeight: "100%",
+              maxHeight: "calc(100% - 32px)",
               display: "flex",
               flexDirection: "column",
               background: "linear-gradient(135deg, #2a1810 0%, #1a0f0a 50%, #2a1810 100%)",

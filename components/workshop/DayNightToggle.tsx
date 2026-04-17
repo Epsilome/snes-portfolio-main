@@ -148,6 +148,17 @@ export default function DayNightToggle() {
           opacity: isMuted ? 0.4 : 0.8,
         }}
       >
+        {isMuted && (
+          <span
+            style={{
+              fontFamily: '"Press Start 2P", cursive',
+              fontSize: "6px",
+              color: "#ff4444",
+            }}
+          >
+            MUTED
+          </span>
+        )}
         <svg
           width="14"
           height="14"

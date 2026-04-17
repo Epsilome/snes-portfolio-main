@@ -186,7 +186,6 @@ export default function InteractiveRoom() {
           >
             <svg
               width="100%"
-              height="auto"
               viewBox="0 0 400 220"
               xmlns="http://www.w3.org/2000/svg"
               style={{ maxWidth: "400px", display: "block" }}
